@@ -5,19 +5,19 @@
 
 # Scraping module for Skyscraper
 # Options: screenscraper, thegamesdb, openretro, worldofspectrum, igdb, mobygames
-module=screenscraper
+MODULE=screenscraper
 
 # Create a miyoogamelist.xml file for each system
 # Set to "false" to disable game list generation
-gamelist="true"
+GAMELIST="true"
 
 # System directories to exclude from scraping
 # Add system folder names separated by spaces
-exclude=(PORTS PICO)
+EXCLUDE=(PORTS PICO)
 
-# Path to Skyscraper config file (no quotes)
-skyscraperini=~/.skyscraper/config.ini
+# Path to Skyscraper config file
+SKYSCRAPER_INI=~/.skyscraper/config.ini
 
 # Replace colons in game titles for better alphabetical sorting
 # This helps with game sequels (e.g., "Game: Subtitle" becomes "Game - Subtitle")
-replacecolons="true"
+# REPLACE_COLONS="true"  # Not yet implemented

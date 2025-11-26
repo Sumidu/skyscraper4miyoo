@@ -159,9 +159,17 @@ function setup_skyscraper_config() {
     echo ""
     echo "ScreenScraper credentials (optional but recommended for better scraping):"
     echo "Register at: https://www.screenscraper.fr/"
-    read -r -p "ScreenScraper username (leave empty to skip): " ss_user
-    read -r -s -p "ScreenScraper password: " ss_pass
     echo ""
+    log_warning "Note: Credentials will be stored in plain text in the config file."
+    echo "       Consider using environment variables for sensitive data in production."
+    echo ""
+    read -r -p "ScreenScraper username (leave empty to skip): " ss_user
+    if [[ -n "$ss_user" ]]; then
+        read -r -s -p "ScreenScraper password: " ss_pass
+        echo ""
+    else
+        ss_pass=""
+    fi
     
     # Create config file
     cat > "$skyscraper_ini" << EOF
