@@ -64,7 +64,7 @@ Edit `config.cfg` to customize the scraping settings:
 |---------|-------------|---------|
 | `ROM_BASE_PATH` | Path to your ROM collection | (required) |
 | `CACHE_PATH` | Path to store scraped cache | (optional) |
-| `ARTWORK_OUTPUT_PATH` | Output path for generated artwork | `<ROM_PATH>/<platform>/Imgs` |
+| `ARTWORK_XML` | Path to artwork XML template file | (optional) |
 | `SCRAPE_SOURCE` | Scraping source (screenscraper, thegamesdb, etc.) | `screenscraper` |
 | `SCREENSCRAPER_USER` | ScreenScraper username | (required for screenscraper) |
 | `SCREENSCRAPER_PASS` | ScreenScraper password | (required for screenscraper) |

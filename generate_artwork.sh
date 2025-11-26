@@ -69,7 +69,9 @@ generate_artwork_platform() {
     local folder_name
     folder_name=$(get_platform_folder "$platform")
     local rom_path="${ROM_BASE_PATH}/${folder_name}"
-    local output_path="${ARTWORK_OUTPUT_PATH:-${ROM_BASE_PATH}/${folder_name}/Imgs}"
+    # Output directly to Imgs folder within the platform directory
+    local output_path="${ROM_BASE_PATH}/${folder_name}/Imgs"
+    local gamelist_path="${ROM_BASE_PATH}/${folder_name}"
     
     if [[ ! -d "$rom_path" ]]; then
         echo "  Skipping $platform - directory not found at $rom_path"
@@ -82,41 +84,31 @@ generate_artwork_platform() {
     mkdir -p "$output_path"
     
     # Build Skyscraper command using array
-    local cmd=("Skyscraper" "-p" "$platform" "-i" "$rom_path" "-o" "$output_path")
+    # The gamelist is placed in the ROM directory while images go to Imgs subfolder
+    local cmd=("Skyscraper" "-p" "$platform" "-i" "$rom_path" "-o" "$output_path" "-g" "$gamelist_path")
+    
+    # Add artwork XML file if specified
+    if [[ -n "$ARTWORK_XML" ]] && [[ -f "$ARTWORK_XML" ]]; then
+        cmd+=("-a" "$ARTWORK_XML")
+    fi
     
     # Add cache path if specified
     if [[ -n "$CACHE_PATH" ]]; then
         cmd+=("-d" "$CACHE_PATH")
     fi
     
-    # Build flags list
-    local flags=""
+    # Build flags list - use unattendskip for combined unattended mode with skip functionality
+    local flags="unattendskip"
     
-    # Note: Image dimensions (IMAGE_WIDTH/IMAGE_HEIGHT) should be set in the artwork XML file
-    # via the <output> tag's width and height attributes, not via command line flags.
-    # See artwork/*.xml for examples.
-    
-    # Add skip existing flags for media types
-    if [[ "$SKIP_EXISTING" == "true" ]]; then
-        flags="skipexistingscreenshots,skipexistingcovers,skipexistingwheels,skipexistingmarquees"
-    fi
-    
-    # Add unattend flag for non-interactive mode
-    if [[ "$UNATTENDED" == "true" ]]; then
-        if [[ -n "$flags" ]]; then
-            flags+=",unattend"
-        else
-            flags="unattend"
-        fi
-    fi
-    
-    # Add combined flags if any
-    if [[ -n "$flags" ]]; then
-        cmd+=("--flags" "$flags")
-    fi
+    # Add combined flags
+    cmd+=("--flags" "$flags")
     
     # Log command
-    echo "Running: Skyscraper -p $platform -i \"$rom_path\" -o \"$output_path\"..."
+    local artwork_info=""
+    if [[ -n "$ARTWORK_XML" ]]; then
+        artwork_info=" -a \"$ARTWORK_XML\""
+    fi
+    echo "Running: Skyscraper -p $platform -i \"$rom_path\" -o \"$output_path\" -g \"$gamelist_path\"${artwork_info}..."
     
     # Execute artwork generation
     "${cmd[@]}"
@@ -138,8 +130,10 @@ main() {
     echo ""
     echo "Configuration:"
     echo "  ROM Path: $ROM_BASE_PATH"
-    echo "  Output: ${ARTWORK_OUTPUT_PATH:-<platform>/Imgs}"
-    echo "  Dimensions: ${IMAGE_WIDTH}x${IMAGE_HEIGHT}"
+    echo "  Output: <platform>/Imgs"
+    if [[ -n "$ARTWORK_XML" ]]; then
+        echo "  Artwork XML: $ARTWORK_XML"
+    fi
     echo "  Platforms: $PLATFORMS"
     echo ""
     
