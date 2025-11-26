@@ -10,6 +10,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_FILE="${SCRIPT_DIR}/config.cfg"
+UTILS_FILE="${SCRIPT_DIR}/utils.sh"
 
 # Load configuration
 # shellcheck source=config.cfg
@@ -18,6 +19,15 @@ if [[ -f "$CONFIG_FILE" ]]; then
 else
     echo "Error: Configuration file not found at $CONFIG_FILE"
     echo "Please create config.cfg based on the provided template."
+    exit 1
+fi
+
+# Load utility functions
+# shellcheck source=utils.sh
+if [[ -f "$UTILS_FILE" ]]; then
+    source "$UTILS_FILE"
+else
+    echo "Error: Utility file not found at $UTILS_FILE"
     exit 1
 fi
 
@@ -66,19 +76,12 @@ check_skyscraper() {
 # Scrape a single platform
 scrape_platform() {
     local platform="$1"
-    local rom_path="${ROM_BASE_PATH}/${platform}"
-    
-    # Convert platform name to directory if different naming convention
-    # Miyoo Mini often uses uppercase folder names
-    if [[ ! -d "$rom_path" ]]; then
-        # Try uppercase version
-        local upper_platform
-        upper_platform=$(echo "$platform" | tr '[:lower:]' '[:upper:]')
-        rom_path="${ROM_BASE_PATH}/${upper_platform}"
-    fi
+    local folder_name
+    folder_name=$(get_platform_folder "$platform")
+    local rom_path="${ROM_BASE_PATH}/${folder_name}"
     
     if [[ ! -d "$rom_path" ]]; then
-        echo "  Skipping $platform - directory not found"
+        echo "  Skipping $platform - directory not found at $rom_path"
         return 0
     fi
     

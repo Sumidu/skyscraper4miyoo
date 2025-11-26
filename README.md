@@ -72,6 +72,7 @@ Edit `config.cfg` to customize the scraping settings:
 | `IMAGE_WIDTH` | Output image width | `640` |
 | `IMAGE_HEIGHT` | Output image height | `480` |
 | `PLATFORMS` | Space-separated list of platforms to scrape | (see config) |
+| `PLATFORM_FOLDER_<platform>` | Custom folder name for a platform (e.g., `PLATFORM_FOLDER_nes="FC"`) | (optional) |
 | `SKIP_EXISTING` | Skip games that already have artwork | `true` |
 | `MAX_THREADS` | Number of concurrent threads | `4` |
 
@@ -109,6 +110,21 @@ ROM_BASE_PATH/
 ```
 
 Generated artwork will be placed in `Imgs` subdirectories by default.
+
+### Custom Folder Names (Onion OS)
+
+If you're using Onion OS or have custom folder names, configure the `PLATFORM_FOLDER_<platform>` settings in `config.cfg`. For example, Onion OS uses:
+
+```bash
+PLATFORM_FOLDER_nes="FC"
+PLATFORM_FOLDER_snes="SFC"
+PLATFORM_FOLDER_megadrive="MD"
+PLATFORM_FOLDER_mastersystem="MS"
+PLATFORM_FOLDER_psx="PS"
+PLATFORM_FOLDER_pcengine="PCE"
+```
+
+This maps Skyscraper's platform names to your actual folder structure:
 
 ## Troubleshooting
 
