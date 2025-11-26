@@ -112,9 +112,9 @@ generate_artwork_platform() {
     fi
     
     # Add unattended mode
-    if [[ "$UNATTENDED" == "true" ]]; then
-        cmd+=("--unattended")
-    fi
+    #if [[ "$UNATTENDED" == "true" ]]; then
+    #    cmd+=("--unattended")
+    #fi
     
     # Log command
     echo "Running: Skyscraper -p $platform -i \"$rom_path\" -o \"$output_path\"..."

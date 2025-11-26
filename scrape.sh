@@ -111,12 +111,12 @@ scrape_platform() {
     fi
     
     # Add unattended mode
-    if [[ "$UNATTENDED" == "true" ]]; then
-        cmd+=("--unattended")
-    fi
+    #if [[ "$UNATTENDED" == "true" ]]; then
+    #    cmd+=("--unattended")
+    #fi
     
     # Log command without credentials for security
-    echo "Running: Skyscraper -p $platform -s $SCRAPE_SOURCE -i \"$rom_path\"..."
+    echo "Running: Skyscraper -p $platform -s $SCRAPE_SOURCE -i \"$rom_path\" ..."
     
     # Execute scraping
     "${cmd[@]}"
