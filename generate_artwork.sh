@@ -92,17 +92,21 @@ generate_artwork_platform() {
     # Build flags list
     local flags=""
     
-    # Add image dimensions
-    if [[ -n "$IMAGE_WIDTH" ]] && [[ -n "$IMAGE_HEIGHT" ]]; then
-        flags="maxwidth=${IMAGE_WIDTH},maxheight=${IMAGE_HEIGHT}"
+    # Note: Image dimensions (IMAGE_WIDTH/IMAGE_HEIGHT) should be set in the artwork XML file
+    # via the <output> tag's width and height attributes, not via command line flags.
+    # See artwork/*.xml for examples.
+    
+    # Add skip existing flags for media types
+    if [[ "$SKIP_EXISTING" == "true" ]]; then
+        flags="skipexistingscreenshots,skipexistingcovers,skipexistingwheels,skipexistingmarquees"
     fi
     
-    # Add skip existing flag
-    if [[ "$SKIP_EXISTING" == "true" ]]; then
+    # Add unattend flag for non-interactive mode
+    if [[ "$UNATTENDED" == "true" ]]; then
         if [[ -n "$flags" ]]; then
-            flags+=",skipexisting"
+            flags+=",unattend"
         else
-            flags="skipexisting"
+            flags="unattend"
         fi
     fi
     
@@ -110,11 +114,6 @@ generate_artwork_platform() {
     if [[ -n "$flags" ]]; then
         cmd+=("--flags" "$flags")
     fi
-    
-    # Add unattended mode
-    #if [[ "$UNATTENDED" == "true" ]]; then
-    #    cmd+=("--unattended")
-    #fi
     
     # Log command
     echo "Running: Skyscraper -p $platform -i \"$rom_path\" -o \"$output_path\"..."
