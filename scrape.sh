@@ -110,10 +110,10 @@ scrape_platform() {
         cmd+=("--verbosity" "3")
     fi
     
-    # Add unattended mode
-    #if [[ "$UNATTENDED" == "true" ]]; then
-    #    cmd+=("--unattended")
-    #fi
+    # Add unattend flag for non-interactive mode
+    if [[ "$UNATTENDED" == "true" ]]; then
+        cmd+=("--flags" "unattend")
+    fi
     
     # Log command without credentials for security
     echo "Running: Skyscraper -p $platform -s $SCRAPE_SOURCE -i \"$rom_path\" ..."

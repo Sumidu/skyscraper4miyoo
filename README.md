@@ -126,6 +126,46 @@ PLATFORM_FOLDER_pcengine="PCE"
 
 This maps Skyscraper's platform names to your actual folder structure:
 
+## Custom Artwork Templates
+
+The `artwork/` directory contains pre-configured artwork XML templates optimized for the Miyoo Mini's display (250x360 pixels). These templates define how game images are composed using Skyscraper's artwork system.
+
+### Available Styles
+
+1. **artwork-miyoo1.xml** - Screenshot with logo overlay
+   - Full-height screenshot (sides cropped if needed)
+   - Game logo displayed at the top with shadow
+   - Gradient overlay for better logo visibility
+
+2. **artwork-miyoo2.xml** - Screenshot with logo and cover
+   - Centered screenshot
+   - Game logo at the top
+   - Box cover art in the bottom right corner
+
+3. **artwork-miyoo3.xml** - Screenshot with transparent left edge
+   - Same as style 1 but with a fade effect on the left side
+   - Helps game titles blend into the artwork on certain themes
+
+### Using Custom Artwork
+
+To use one of these artwork templates with Skyscraper:
+
+```bash
+Skyscraper -p <platform> -a artwork/artwork-miyoo1.xml -i <rom_path> -o <output_path>
+```
+
+Or copy your preferred template to the Skyscraper config directory:
+
+```bash
+cp artwork/artwork-miyoo1.xml ~/.skyscraper/artwork.xml
+```
+
+### Creating Custom Templates
+
+You can modify these templates or create your own. The `artwork/resources/` directory contains a README explaining the required resource images (gradients, backgrounds).
+
+For detailed documentation on Skyscraper's artwork system, see the [Skyscraper Artwork Documentation](https://github.com/Gemba/skyscraper/blob/master/docs/ARTWORK.md).
+
 ## Troubleshooting
 
 ### Skyscraper not found
