@@ -98,7 +98,7 @@ generate_artwork_platform() {
     fi
     
     # Build flags list - use unattendskip for combined unattended mode with skip functionality
-    local flags="unattendskip"
+    local flags="unattend"
     
     # Add combined flags
     cmd+=("--flags" "$flags")
